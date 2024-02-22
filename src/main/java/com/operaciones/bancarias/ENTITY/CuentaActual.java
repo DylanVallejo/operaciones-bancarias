@@ -12,7 +12,7 @@ import org.hibernate.bytecode.enhance.spi.EnhancementInfo;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@DiscriminatorValue("CA") //CA = CURRENT ACOUNT CUENTA ACTUAL
+//@DiscriminatorValue("CA") //CA = CURRENT ACOUNT CUENTA ACTUAL
 public class CuentaActual extends CuentaBancaria {
 
 

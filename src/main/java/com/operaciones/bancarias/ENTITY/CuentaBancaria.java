@@ -14,9 +14,9 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)  //nos permite tener herencia en la clase para poder crear otro tipo de cuenta
-@DiscriminatorColumn(name = "TIPO", length = 4) //
-public class CuentaBancaria {
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)  //nos permite tener herencia en la clase para poder crear otro tipo de cuenta
+//@DiscriminatorColumn(name = "TIPO", length = 4) //
+public abstract class CuentaBancaria {
 
 
     @Id
