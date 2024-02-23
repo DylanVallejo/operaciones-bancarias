@@ -14,8 +14,8 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)  //nos permite tener herencia en la clase para poder crear otro tipo de cuenta
-//@DiscriminatorColumn(name = "TIPO", length = 4) //
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)  //nos permite tener herencia en la clase para poder crear otro tipo de cuenta
+@DiscriminatorColumn(name = "TIPO", length = 4) //
 public abstract class CuentaBancaria {
 
 
@@ -34,7 +34,9 @@ public abstract class CuentaBancaria {
     @ManyToOne
     private Cliente cliente;
 
-    @OneToMany(mappedBy = "cuentaBancaria")
+
+//    fetch = FetchType.LAZY nos permite traer informacion unicmanete cuando se lo solicita EAGER nos traera infor tod0 el tiempo
+    @OneToMany(mappedBy = "cuentaBancaria", fetch = FetchType.LAZY)
     private List<OperacionCuenta> operacionesCuenta;
 
 

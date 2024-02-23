@@ -6,6 +6,7 @@ import com.operaciones.bancarias.ENUMS.TipoOperacion;
 import com.operaciones.bancarias.REPOSITORY.ClienteRepository;
 import com.operaciones.bancarias.REPOSITORY.CuentaBancariaRepository;
 import com.operaciones.bancarias.REPOSITORY.OperacionCuentaRepository;
+import com.operaciones.bancarias.SERVICE.BancoService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -24,6 +25,13 @@ public class BancariasApplication {
 	}
 
 	@Bean
+	CommandLineRunner commandLineRunner(BancoService bancoService){
+		return args -> {
+			bancoService.consultar();
+		};
+	}
+
+//	@Bean
 	CommandLineRunner start (ClienteRepository clienteRepository, CuentaBancariaRepository cuentaBancariaRepository, OperacionCuentaRepository operacionCuentaRepository){
 //		llenamos datos
 		return args -> {
