@@ -13,13 +13,13 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service   // esto q=creo que no vva aqui ****************////////////////////////****************
+//@Service   // esto q=creo que no vva aqui ****************////////////////////////****************
 public interface CuentaBancariaService {
 
 
     Cliente saveCliente(Cliente cliente);
 
-    CuentaActual saveCuentaActual(double balanceInicial, double sobregiro, Long clienteId) throws ClienteNotFoundException;
+    CuentaActual saveCuentaBancariaActual(double balanceInicial, double sobregiro, Long clienteId) throws ClienteNotFoundException;
 
     CuentaAhorro saveCuentaBancariaAhorro(double balanceInicial, double sobregiro, Long clienteId) throws ClienteNotFoundException;
 
