@@ -1,5 +1,6 @@
 package com.operaciones.bancarias;
 
+import com.operaciones.bancarias.DTOS.ClienteDTO;
 import com.operaciones.bancarias.ENTITY.*;
 import com.operaciones.bancarias.ENUMS.EstadoCuenta;
 import com.operaciones.bancarias.ENUMS.TipoOperacion;
@@ -39,7 +40,7 @@ public class BancariasApplication {
 //		llenamos datos
 		return args -> {
 			Stream.of("Christian", "Julen",  "Dylan", "Lanudo").forEach(nombre -> {
-				Cliente cliente = new Cliente();
+				ClienteDTO cliente = new ClienteDTO();
 				cliente.setNombre(nombre);
 				cliente.setEmail(nombre+"@gmail.com");
 				cuentaBancariaService.saveCliente(cliente);

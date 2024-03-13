@@ -16,6 +16,7 @@ import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.Date;
 import java.util.List;
@@ -41,11 +42,45 @@ public class CuentaBancariaServiceImp implements CuentaBancariaService {
     private CuentaBancariaMapperImpl cuentaBancariaMapper;
 
     @Override
-    public Cliente saveCliente(Cliente cliente) {
+    public ClienteDTO saveCliente(ClienteDTO clienteDTO) {
         log.info("Guardando un cliente nuevo.");
+        Cliente cliente = cuentaBancariaMapper.mapearDeClienteDTO(clienteDTO);
         Cliente clienteBBDD = clienteRepository.save(cliente);
-        return clienteBBDD;
+        return cuentaBancariaMapper.mapearDeCliente(clienteBBDD);
     }
+
+    @Override
+    public ClienteDTO getCliente(Long clienteId) throws ClienteNotFoundException {
+        Cliente cliente = clienteRepository.findById(clienteId)
+                .orElseThrow(()-> new ClienteNotFoundException("Cliente no encontrado"));
+        return cuentaBancariaMapper.mapearDeCliente(cliente);
+
+    }
+
+    @Override
+    public ClienteDTO updateCliente(ClienteDTO clienteDTO) throws ClienteNotFoundException {
+        log.info("actualizando cliente");
+        Cliente cliente = cuentaBancariaMapper.mapearDeClienteDTO(clienteDTO);
+        Cliente clienteActualizado = clienteRepository.save(cliente);
+
+        return cuentaBancariaMapper.mapearDeCliente(clienteActualizado);
+    }
+
+    @Override
+    public void deleteCliente(Long clienteId) throws ClienteNotFoundException {
+        clienteRepository.deleteById(clienteId);
+    }
+
+//    @Override
+//    private ClienteDTO updateCliente(Long clienteId ) throws  ClienteNotFoundException{
+//        Cliente cliente = clienteRepository.findById(clienteId)
+//                .orElseThrow(()-> new ClienteNotFoundException("Cliente no ecnotrado"));
+//        Cliente clienteActualizado = new Cliente();
+//
+//
+//        return
+//
+//    }
 
     @Override
     public CuentaActual saveCuentaBancariaActual(double balanceInicial, double sobregiro, Long clienteId) throws ClienteNotFoundException {
