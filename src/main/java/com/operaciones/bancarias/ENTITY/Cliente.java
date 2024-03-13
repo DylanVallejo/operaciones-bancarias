@@ -27,7 +27,7 @@ public class Cliente {
 //    un cliente puede tener varias cuentas bancarias
 //    indicamos que sera mapeada por la tabla cliente
     @OneToMany(  mappedBy = "cliente", cascade = CascadeType.ALL)
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+//    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<CuentaBancaria> cuentaBancarias;
 
 

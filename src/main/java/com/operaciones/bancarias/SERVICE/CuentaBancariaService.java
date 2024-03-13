@@ -1,6 +1,7 @@
 package com.operaciones.bancarias.SERVICE;
 
 
+import com.operaciones.bancarias.DTOS.ClienteDTO;
 import com.operaciones.bancarias.ENTITY.Cliente;
 import com.operaciones.bancarias.ENTITY.CuentaActual;
 import com.operaciones.bancarias.ENTITY.CuentaAhorro;
@@ -23,7 +24,7 @@ public interface CuentaBancariaService {
 
     CuentaAhorro saveCuentaBancariaAhorro(double balanceInicial, double sobregiro, Long clienteId) throws ClienteNotFoundException;
 
-    List<Cliente> listarClientes();
+    List<ClienteDTO> listarClientes();
 
     CuentaBancaria getCuentaBancaria(String cuentaId) throws CuentaBancariaNotFoundException;
 

@@ -1,11 +1,13 @@
 package com.operaciones.bancarias.SERVICE.impl;
 
 
+import com.operaciones.bancarias.DTOS.ClienteDTO;
 import com.operaciones.bancarias.ENTITY.*;
 import com.operaciones.bancarias.ENUMS.TipoOperacion;
 import com.operaciones.bancarias.EXCEPTIONS.BalanceInsuficienteException;
 import com.operaciones.bancarias.EXCEPTIONS.ClienteNotFoundException;
 import com.operaciones.bancarias.EXCEPTIONS.CuentaBancariaNotFoundException;
+import com.operaciones.bancarias.MAPPERS.CuentaBancariaMapperImpl;
 import com.operaciones.bancarias.REPOSITORY.ClienteRepository;
 import com.operaciones.bancarias.REPOSITORY.CuentaBancariaRepository;
 import com.operaciones.bancarias.REPOSITORY.OperacionCuentaRepository;
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -33,6 +36,9 @@ public class CuentaBancariaServiceImp implements CuentaBancariaService {
 
     @Autowired
     private OperacionCuentaRepository operacionCuentaRepository;
+
+    @Autowired
+    private CuentaBancariaMapperImpl cuentaBancariaMapper;
 
     @Override
     public Cliente saveCliente(Cliente cliente) {
@@ -78,8 +84,13 @@ public class CuentaBancariaServiceImp implements CuentaBancariaService {
     }
 
     @Override
-    public List<Cliente> listarClientes() {
-        return clienteRepository.findAll();
+    public List<ClienteDTO> listarClientes() {
+        List<Cliente> clientes = clienteRepository.findAll();
+        List<ClienteDTO> clientesDtos = clientes.stream()
+                .map(cliente-> cuentaBancariaMapper.mapearDeCliente(cliente))
+                .collect(Collectors.toList());
+
+        return clientesDtos;
     }
 
     @Override
