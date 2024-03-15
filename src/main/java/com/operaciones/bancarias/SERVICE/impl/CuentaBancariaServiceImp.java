@@ -60,15 +60,25 @@ public class CuentaBancariaServiceImp implements CuentaBancariaService {
     @Override
     public ClienteDTO updateCliente(ClienteDTO clienteDTO) throws ClienteNotFoundException {
         log.info("actualizando cliente");
-        Cliente cliente = cuentaBancariaMapper.mapearDeClienteDTO(clienteDTO);
-        Cliente clienteActualizado = clienteRepository.save(cliente);
-
-        return cuentaBancariaMapper.mapearDeCliente(clienteActualizado);
+//        ).orElseThrow(()-> new ClienteNotFoundException("Cliente no existe"));
+        if(clienteRepository.findById(clienteDTO.getId()).isPresent()){
+            Cliente cliente = cuentaBancariaMapper.mapearDeClienteDTO(clienteDTO);
+            Cliente clienteActualizado = clienteRepository.save(cliente);
+            return cuentaBancariaMapper.mapearDeCliente(clienteActualizado);
+        }else {
+            throw new ClienteNotFoundException("Cliente no encontrado.");
+        }
     }
 
     @Override
     public void deleteCliente(Long clienteId) throws ClienteNotFoundException {
-        clienteRepository.deleteById(clienteId);
+
+        if(clienteRepository.findById(clienteId).isPresent()) {
+            clienteRepository.deleteById(clienteId);
+        }else {
+            throw new ClienteNotFoundException(" El cliente con el id : " + clienteId + " no existe. ");
+        }
+
     }
 
 //    @Override
