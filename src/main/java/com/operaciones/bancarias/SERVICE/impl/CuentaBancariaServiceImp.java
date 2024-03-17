@@ -158,8 +158,9 @@ public class CuentaBancariaServiceImp implements CuentaBancariaService {
 
     @Override
     public void debit(String cuentaId, double monto, String descripcion) throws CuentaBancariaNotFoundException, BalanceInsuficienteException {
-        CuentaBancariaDTO cuentaBancariaDTO = getCuentaBancaria(cuentaId);
-        if (cuentaBancariaDTO.getBalance() < monto){
+        CuentaBancaria cuentaBancaria = cuentaBancariaRepository.findById(cuentaId)
+                .orElseThrow(()  -> new CuentaBancariaNotFoundException("Cuenta bancaria no encontrada"));
+        if (cuentaBancaria.getBalance() < monto){
             throw new BalanceInsuficienteException("Blance insuficiente");
         }
         OperacionCuenta operacionCuenta = new OperacionCuenta();
@@ -176,7 +177,8 @@ public class CuentaBancariaServiceImp implements CuentaBancariaService {
 
     @Override
     public void credit(String cuentaId, double monto, String descripcion) throws CuentaBancariaNotFoundException {
-        CuentaBancaria cuentaBancaria = getCuentaBancaria(cuentaId);
+        CuentaBancaria cuentaBancaria = cuentaBancariaRepository.findById(cuentaId)
+                .orElseThrow(()  -> new CuentaBancariaNotFoundException("Cuenta bancaria no encontrada"));
 
 
         OperacionCuenta operacionCuenta = new OperacionCuenta();
@@ -233,7 +235,20 @@ public class CuentaBancariaServiceImp implements CuentaBancariaService {
     }
 
     @Override
-    public List<CuentaBancaria> listarCuentasBancarias() {
-        return cuentaBancariaRepository.findAll();
+    public List<CuentaBancariaDTO> listarCuentasBancarias() {
+        List<CuentaBancaria> cuentasBancarias = cuentaBancariaRepository.findAll();
+        List<CuentaBancariaDTO> cuentasBancariasDTOS = cuentasBancarias.stream().map(cuentaBancaria -> {
+            if(cuentaBancaria instanceof CuentaAhorro){
+                CuentaAhorro cuentaAhorro = (CuentaAhorro) cuentaBancaria;
+                return cuentaBancariaMapper.mapearDeCuentaAhorro(cuentaAhorro);
+            } else {
+                CuentaActual cuentaActual = (CuentaActual) cuentaBancaria;
+                return cuentaBancariaMapper.mapearDeCuentaActual(cuentaActual) ;
+            }
+        }).collect(Collectors.toList());
+        return cuentasBancariasDTOS;
     }
+
+
+
 }

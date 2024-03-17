@@ -43,5 +43,5 @@ public interface CuentaBancariaService {
 
     void transfer(String cuentaIdPropetario, String cuentaIdDestinatario, double monto) throws CuentaBancariaNotFoundException, BalanceInsuficienteException;
 
-    List<CuentaBancaria> listarCuentasBancarias();
+    List<CuentaBancariaDTO> listarCuentasBancarias();
 }
