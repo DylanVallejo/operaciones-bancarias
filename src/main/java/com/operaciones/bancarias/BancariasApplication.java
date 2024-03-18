@@ -31,14 +31,14 @@ public class BancariasApplication {
 		SpringApplication.run(BancariasApplication.class, args);
 	}
 
-//	@Bean
+	//@Bean
 	CommandLineRunner commandLineRunner(BancoService bancoService){
 		return args -> {
 			bancoService.consultar();
 		};
 	}
 
-//	@Bean
+	@Bean
 	CommandLineRunner start (CuentaBancariaService cuentaBancariaService){
 //		llenamos datos
 		return args -> {
