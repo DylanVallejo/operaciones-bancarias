@@ -15,6 +15,8 @@ import com.operaciones.bancarias.SERVICE.CuentaBancariaService;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -253,6 +255,28 @@ public class CuentaBancariaServiceImp implements CuentaBancariaService {
         return operacionesDeCuentas.stream().map(operacionCuenta ->
                 cuentaBancariaMapper.mapearDeOperacionCuenta(operacionCuenta)
         ).collect(Collectors.toList());
+    }
+
+    @Override
+    public HistorialCuentaDTO getHistorialCuenta(String cuentaId, int page, int size) throws CuentaBancariaNotFoundException {
+        CuentaBancaria cuentaBancaria = cuentaBancariaRepository.findById(cuentaId)
+                .orElse(null);
+
+        if(cuentaBancaria == null){
+            throw new CuentaBancariaNotFoundException("Cuenta no encontrada");
+        }
+        Page<OperacionCuenta> operacionesCuenta = operacionCuentaRepository.findByCuentaBancariaId(cuentaId, PageRequest.of(page, size));
+        HistorialCuentaDTO historialCuentaDTO = new HistorialCuentaDTO();
+        List<OperacionCuentaDTO> operacionesCuentaDTOS = operacionesCuenta.getContent().stream()
+                .map(operacionCuenta -> cuentaBancariaMapper.mapearDeOperacionCuenta(operacionCuenta)).collect(Collectors.toList());
+        historialCuentaDTO.setOperacionCuentaDTOS(operacionesCuentaDTOS);
+        historialCuentaDTO.setCuentaId(cuentaBancaria.getId());
+        historialCuentaDTO.setBalance(cuentaBancaria.getBalance());
+        historialCuentaDTO.setCurrentPage(page);
+        historialCuentaDTO.setPageSize(size);
+        historialCuentaDTO.setTotalPage(operacionesCuenta.getTotalPages());
+
+        return historialCuentaDTO;
     }
 
 

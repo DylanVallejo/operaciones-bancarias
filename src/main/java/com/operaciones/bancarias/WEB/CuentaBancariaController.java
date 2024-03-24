@@ -1,15 +1,13 @@
 package com.operaciones.bancarias.WEB;
 
 import com.operaciones.bancarias.DTOS.CuentaBancariaDTO;
+import com.operaciones.bancarias.DTOS.HistorialCuentaDTO;
 import com.operaciones.bancarias.DTOS.OperacionCuentaDTO;
 import com.operaciones.bancarias.ENTITY.OperacionCuenta;
 import com.operaciones.bancarias.EXCEPTIONS.CuentaBancariaNotFoundException;
 import com.operaciones.bancarias.SERVICE.CuentaBancariaService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -36,6 +34,9 @@ public class CuentaBancariaController {
         return cuentaBancariaService.historialDeCuenta(cuentaId);
     }
 
-
+    @GetMapping("/cuentas/pageOperaciones/{cuentaId}")
+    public HistorialCuentaDTO listarHistorialCuentasPaginadas(@PathVariable String cuentaId, @RequestParam(name= "page", defaultValue = "0") int page, @RequestParam(name = "size", defaultValue = "5") int size) throws  CuentaBancariaNotFoundException{
+        return cuentaBancariaService.getHistorialCuenta(cuentaId, page, size);
+    }
 
 }
