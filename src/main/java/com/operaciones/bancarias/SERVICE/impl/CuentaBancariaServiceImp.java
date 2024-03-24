@@ -1,10 +1,7 @@
 package com.operaciones.bancarias.SERVICE.impl;
 
 
-import com.operaciones.bancarias.DTOS.ClienteDTO;
-import com.operaciones.bancarias.DTOS.CuentaActualDTO;
-import com.operaciones.bancarias.DTOS.CuentaAhorroDTO;
-import com.operaciones.bancarias.DTOS.CuentaBancariaDTO;
+import com.operaciones.bancarias.DTOS.*;
 import com.operaciones.bancarias.ENTITY.*;
 import com.operaciones.bancarias.ENUMS.TipoOperacion;
 import com.operaciones.bancarias.EXCEPTIONS.BalanceInsuficienteException;
@@ -249,6 +246,14 @@ public class CuentaBancariaServiceImp implements CuentaBancariaService {
         return cuentasBancariasDTOS;
     }
 
+    @Override
+    public List<OperacionCuentaDTO> historialDeCuenta(String cuentaId) {
+//        retornando todas las opereaciones que se han realizado en una cuenta bancaria
+        List<OperacionCuenta> operacionesDeCuentas = operacionCuentaRepository.findByCuentaBancariaId(cuentaId);
+        return operacionesDeCuentas.stream().map(operacionCuenta ->
+                cuentaBancariaMapper.mapearDeOperacionCuenta(operacionCuenta)
+        ).collect(Collectors.toList());
+    }
 
 
 }

@@ -4,9 +4,11 @@ package com.operaciones.bancarias.MAPPERS;
 import com.operaciones.bancarias.DTOS.ClienteDTO;
 import com.operaciones.bancarias.DTOS.CuentaActualDTO;
 import com.operaciones.bancarias.DTOS.CuentaAhorroDTO;
+import com.operaciones.bancarias.DTOS.OperacionCuentaDTO;
 import com.operaciones.bancarias.ENTITY.Cliente;
 import com.operaciones.bancarias.ENTITY.CuentaActual;
 import com.operaciones.bancarias.ENTITY.CuentaAhorro;
+import com.operaciones.bancarias.ENTITY.OperacionCuenta;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -58,6 +60,14 @@ public class CuentaBancariaMapperImpl {
 
         cuentaActual.setCliente(mapearDeClienteDTO(cuentaActualDTO.getClienteDTO()));
         return cuentaActual;
+    }
+
+    public OperacionCuentaDTO mapearDeOperacionCuenta(OperacionCuenta operacionCuenta){
+
+        OperacionCuentaDTO operacionCuentaDTO = new OperacionCuentaDTO();
+        BeanUtils.copyProperties(operacionCuenta, operacionCuentaDTO);
+        return operacionCuentaDTO;
+
     }
 
 

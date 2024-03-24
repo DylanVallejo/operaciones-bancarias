@@ -1,10 +1,7 @@
 package com.operaciones.bancarias.SERVICE;
 
 
-import com.operaciones.bancarias.DTOS.ClienteDTO;
-import com.operaciones.bancarias.DTOS.CuentaActualDTO;
-import com.operaciones.bancarias.DTOS.CuentaAhorroDTO;
-import com.operaciones.bancarias.DTOS.CuentaBancariaDTO;
+import com.operaciones.bancarias.DTOS.*;
 import com.operaciones.bancarias.ENTITY.Cliente;
 import com.operaciones.bancarias.ENTITY.CuentaActual;
 import com.operaciones.bancarias.ENTITY.CuentaAhorro;
@@ -44,4 +41,7 @@ public interface CuentaBancariaService {
     void transfer(String cuentaIdPropetario, String cuentaIdDestinatario, double monto) throws CuentaBancariaNotFoundException, BalanceInsuficienteException;
 
     List<CuentaBancariaDTO> listarCuentasBancarias();
+
+
+    List<OperacionCuentaDTO> historialDeCuenta(String cuentaId);
 }
