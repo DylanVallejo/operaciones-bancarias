@@ -1,6 +1,7 @@
 package com.operaciones.bancarias.SERVICE.impl;
 
 
+import ch.qos.logback.core.net.server.Client;
 import com.operaciones.bancarias.DTOS.*;
 import com.operaciones.bancarias.ENTITY.*;
 import com.operaciones.bancarias.ENUMS.TipoOperacion;
@@ -70,6 +71,14 @@ public class CuentaBancariaServiceImp implements CuentaBancariaService {
         }else {
             throw new ClienteNotFoundException("Cliente no encontrado.");
         }
+    }
+
+    @Override
+    public List<ClienteDTO> searchClientes(String keyword) {
+        List<Cliente> clientes = clienteRepository.searchClientes(keyword);
+        List<ClienteDTO> clientesDTOS = clientes.stream().map(cliente -> cuentaBancariaMapper.mapearDeCliente(cliente)).collect(Collectors.toList());
+        return clientesDTOS;
+
     }
 
     @Override
@@ -278,6 +287,8 @@ public class CuentaBancariaServiceImp implements CuentaBancariaService {
 
         return historialCuentaDTO;
     }
+
+
 
 
 }

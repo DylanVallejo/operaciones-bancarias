@@ -47,5 +47,10 @@ public class ClienteController {
         cuentaBancariaService.deleteCliente(clienteId);
     }
 
+    @GetMapping("/clientes/search")
+    public List<ClienteDTO> buscarClientes(@RequestParam(name = "keyword", defaultValue = "") String keyword){
+            return cuentaBancariaService.searchClientes("%"+keyword+"%");
+    }
+
 
 }
