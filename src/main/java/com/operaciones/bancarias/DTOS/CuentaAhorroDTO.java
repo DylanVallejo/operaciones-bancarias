@@ -12,7 +12,7 @@ public class CuentaAhorroDTO  extends CuentaBancariaDTO {
 
     private String id;
     private double balance;
-    private Date fechaDeCreacion;
+    private Date fechaCreacion;
     private EstadoCuenta estadoCuenta;
     private ClienteDTO clienteDTO;
     private double tasaDeInteres;

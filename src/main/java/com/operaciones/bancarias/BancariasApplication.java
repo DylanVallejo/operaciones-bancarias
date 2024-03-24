@@ -38,7 +38,7 @@ public class BancariasApplication {
 		};
 	}
 
-	@Bean
+//	@Bean
 	CommandLineRunner start (CuentaBancariaService cuentaBancariaService){
 //		llenamos datos
 		return args -> {
