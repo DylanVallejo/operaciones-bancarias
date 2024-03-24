@@ -13,6 +13,8 @@ public interface OperacionCuentaRepository extends JpaRepository<OperacionCuenta
 
     List<OperacionCuenta> findByCuentaBancariaId(String cuentaId);
 
-    Page<OperacionCuenta> findByCuentaBancariaId(String cuentaId, Pageable pageable);
+//    Page<OperacionCuenta> findByCuentaBancariaId(String cuentaId, Pageable pageable);
+
+    Page<OperacionCuenta> findByCuentaBancariaIdOrderByFechaOperacionDesc(String cuentaId, Pageable pageable);
 
 }

@@ -1,7 +1,6 @@
 package com.operaciones.bancarias.SERVICE.impl;
 
 
-import ch.qos.logback.core.net.server.Client;
 import com.operaciones.bancarias.DTOS.*;
 import com.operaciones.bancarias.ENTITY.*;
 import com.operaciones.bancarias.ENUMS.TipoOperacion;
@@ -19,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.Date;
 import java.util.List;
@@ -202,11 +200,18 @@ public class CuentaBancariaServiceImp implements CuentaBancariaService {
     }
 
     @Override
-    public void transfer(String cuentaIdPropetario, String cuentaIdDestinatario, double monto) throws CuentaBancariaNotFoundException, BalanceInsuficienteException {
+    public TransferenciaRequestDTO transfer(String cuentaIdPropetario, String cuentaIdDestinatario, double monto, String descripcion) throws CuentaBancariaNotFoundException, BalanceInsuficienteException {
+
+        TransferenciaRequestDTO transferenciaRequestDTO = new TransferenciaRequestDTO();
+
 
         debit(cuentaIdPropetario, monto, "trasferencia a: "+ cuentaIdDestinatario);
         credit(cuentaIdDestinatario, monto, "Transferencia de : " + cuentaIdPropetario);
 
+        transferenciaRequestDTO.setCuentaPropietario(cuentaIdDestinatario);
+        transferenciaRequestDTO.setCuentaDestiantario(cuentaIdDestinatario);
+        transferenciaRequestDTO.setMonto(monto);
+        transferenciaRequestDTO.setDescripcion(descripcion);
 //        esoty repitiendo codigo :c
 //        ya existe las funciones para agregar o quitar dinero
 //        CuentaBancaria cuentaBancariaPropietario = getCuentaBancaria(cuentaIdPropetario);
@@ -240,6 +245,7 @@ public class CuentaBancariaServiceImp implements CuentaBancariaService {
 //        operacionCuentaRepository.save(operacionCuentaDestiantario);
 //        cuentaBancariaDestiantario.setBalance(cuentaBancariaPropietario.getBalance() + monto);
 
+        return transferenciaRequestDTO;
     }
 
     @Override
@@ -274,7 +280,7 @@ public class CuentaBancariaServiceImp implements CuentaBancariaService {
         if(cuentaBancaria == null){
             throw new CuentaBancariaNotFoundException("Cuenta no encontrada");
         }
-        Page<OperacionCuenta> operacionesCuenta = operacionCuentaRepository.findByCuentaBancariaId(cuentaId, PageRequest.of(page, size));
+        Page<OperacionCuenta> operacionesCuenta = operacionCuentaRepository.findByCuentaBancariaIdOrderByFechaOperacionDesc(cuentaId, PageRequest.of(page, size));
         HistorialCuentaDTO historialCuentaDTO = new HistorialCuentaDTO();
         List<OperacionCuentaDTO> operacionesCuentaDTOS = operacionesCuenta.getContent().stream()
                 .map(operacionCuenta -> cuentaBancariaMapper.mapearDeOperacionCuenta(operacionCuenta)).collect(Collectors.toList());

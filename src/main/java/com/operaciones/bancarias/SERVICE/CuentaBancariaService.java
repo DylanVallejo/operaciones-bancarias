@@ -40,7 +40,7 @@ public interface CuentaBancariaService {
 
     void credit(String cuentaId, double monto, String descripcion) throws CuentaBancariaNotFoundException;
 
-    void transfer(String cuentaIdPropetario, String cuentaIdDestinatario, double monto) throws CuentaBancariaNotFoundException, BalanceInsuficienteException;
+    TransferenciaRequestDTO transfer(String cuentaIdPropetario, String cuentaIdDestinatario, double monto, String descripcion) throws CuentaBancariaNotFoundException, BalanceInsuficienteException;
 
     List<CuentaBancariaDTO> listarCuentasBancarias();
 
